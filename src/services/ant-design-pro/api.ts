@@ -1,4 +1,3 @@
-// @ts-expect-error
 /* eslint-disable */
 import { request } from '@umijs/max';
 
@@ -25,7 +24,7 @@ export async function login(
   body: API.LoginParams,
   options?: { [key: string]: any },
 ) {
-  return request<API.LoginResult>('/api/login/account', {
+  return request<API.LoginResult>('/auth/token', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

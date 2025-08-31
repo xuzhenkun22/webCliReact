@@ -151,6 +151,8 @@ export const layout: RunTimeLayoutConfig = ({
  * @doc https://umijs.org/docs/max/request#配置
  */
 export const request: RequestConfig = {
-  baseURL: isDev ? '' : 'https://proapi.azurewebsites.net',
+  baseURL: isDev
+    ? '127.0.0.1:4222/api/v1/'
+    : 'https://proapi.azurewebsites.net',
   ...errorConfig,
 };
