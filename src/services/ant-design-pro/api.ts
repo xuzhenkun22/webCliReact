@@ -19,12 +19,12 @@ export async function outLogin(options?: { [key: string]: any }) {
   });
 }
 
-/** 登录接口 POST /api/login/account */
+/** 登录接口 POST /api/auth/token */
 export async function login(
   body: API.LoginParams,
   options?: { [key: string]: any },
 ) {
-  return request<API.LoginResult>('/auth/token', {
+  return request<API.LoginResult>('api/auth/token', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
