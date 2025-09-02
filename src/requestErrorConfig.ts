@@ -1,5 +1,5 @@
 ﻿import type { RequestOptions } from '@@/plugin-request/request';
-import type { RequestConfig } from '@umijs/max';
+import { type RequestConfig, useModel } from '@umijs/max';
 import { message, notification } from 'antd';
 
 // 错误处理方案： 错误类型
@@ -89,7 +89,20 @@ export const errorConfig: RequestConfig = {
   requestInterceptors: [
     (config: RequestOptions) => {
       // 拦截请求配置，进行个性化处理。
-      const url = config?.url?.concat('?token=123');
+      const LOGIN_API_PATH = '/api/v1/auth/token';
+      const requestUrl = config.url || '';
+      const pathname = new URL(requestUrl, window.location.origin).pathname;
+      const isLoginRequest = pathname === LOGIN_API_PATH;
+      if (!isLoginRequest) {
+        const currentToken = localStorage.getItem('currentToken') || '';
+        if (currentToken) {
+          if (!config.headers) {
+            config.headers = {};
+          }
+          config.headers['Authorization'] = `Bearer ${currentToken}`;
+        }
+      }
+      const url = config?.url?.concat('');
       return { ...config, url };
     },
   ],

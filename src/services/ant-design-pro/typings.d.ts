@@ -22,11 +22,17 @@ declare namespace API {
     address?: string;
     phone?: string;
   };
-
+  interface LoginData {
+    login_type: string; // 登录方式（如 "account" 账号密码登录、"mobile" 手机号登录）
+    access_token: string; // 核心：访问令牌（后续接口鉴权用）
+    token_type: string; // token 类型（如 "bearer"，配合请求头使用）
+    user_id: number | string; // 用户唯一标识（可能是数字 ID 或字符串 ID）
+    username: string; // 用户名（前端展示用）
+    role: string; // 用户角色（如 "admin" 管理员、"user" 普通用户，用于权限控制）
+  }
   type LoginResult = {
-    status?: string;
-    type?: string;
-    currentAuthority?: string;
+    success?: boolean;
+    data?: LoginData;
   };
 
   type PageParams = {
@@ -35,18 +41,18 @@ declare namespace API {
   };
 
   type RuleListItem = {
-    key?: number;
-    disabled?: boolean;
-    href?: string;
+    id?: number;
+    is_active?: boolean;
+    email?: string;
     avatar?: string;
-    name?: string;
-    owner?: string;
-    desc?: string;
-    callNo?: number;
-    status?: number;
-    updatedAt?: string;
-    createdAt?: string;
-    progress?: number;
+    username?: string;
+    role?: string;
+    signature?: string;
+    title?: string;
+    group?: string;
+    created_at?: string;
+    updated_at?: string;
+    phone?: string;
   };
 
   type RuleList = {

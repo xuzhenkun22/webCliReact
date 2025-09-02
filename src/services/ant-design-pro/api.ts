@@ -1,12 +1,10 @@
 /* eslint-disable */
 import { request } from '@umijs/max';
 
-/** 获取当前的用户 GET /api/currentUser */
+/** 获取当前的用户 POST /api/currentUser */
 export async function currentUser(options?: { [key: string]: any }) {
-  return request<{
-    data: API.CurrentUser;
-  }>('/api/currentUser', {
-    method: 'GET',
+  return request<{ data: API.CurrentUser }>('/api/auth/currentUser', {
+    method: 'POST',
     ...(options || {}),
   });
 }
@@ -24,7 +22,7 @@ export async function login(
   body: API.LoginParams,
   options?: { [key: string]: any },
 ) {
-  return request<API.LoginResult>('api/auth/token', {
+  return request<API.LoginResult>('/api/auth/token', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -47,15 +45,18 @@ export async function rule(
   params: {
     // query
     /** 当前的页码 */
-    current?: number;
+    skip?: number;
     /** 页面的容量 */
-    pageSize?: number;
+    limit?: number;
   },
   options?: { [key: string]: any },
 ) {
-  return request<API.RuleList>('/api/rule', {
-    method: 'GET',
-    params: {
+  return request<API.RuleList>('/api/users/list', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: {
       ...params,
     },
     ...(options || {}),

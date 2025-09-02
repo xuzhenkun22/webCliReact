@@ -218,7 +218,7 @@ const TableList: React.FC = () => {
 
       await delRun({
         data: {
-          key: selectedRows.map((row) => row.key),
+          key: selectedRows.map((row) => row.id),
         },
       });
     },
@@ -269,7 +269,7 @@ const TableList: React.FC = () => {
                   defaultMessage="Total number of service calls"
                 />{' '}
                 {selectedRowsState.reduce(
-                  (pre, item) => pre + (item.callNo ?? 0),
+                  (pre, item) => pre + (item.id ?? 0),
                   0,
                 )}{' '}
                 <FormattedMessage
@@ -309,15 +309,15 @@ const TableList: React.FC = () => {
         }}
         closable={false}
       >
-        {currentRow?.name && (
+        {currentRow?.username && (
           <ProDescriptions<API.RuleListItem>
             column={2}
-            title={currentRow?.name}
+            title={currentRow?.username}
             request={async () => ({
               data: currentRow || {},
             })}
             params={{
-              id: currentRow?.name,
+              id: currentRow?.username,
             }}
             columns={columns as ProDescriptionsItemProps<API.RuleListItem>[]}
           />

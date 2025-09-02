@@ -134,7 +134,8 @@ const Login: React.FC = () => {
     try {
       // 登录
       const msg = await login({ ...values, type });
-      if (msg.status === 'ok') {
+      if (msg.success) {
+        localStorage.setItem('currentToken', msg.data?.access_token || ''); //转换成json字符串序列
         const defaultLoginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',
           defaultMessage: '登录成功！',
@@ -145,7 +146,6 @@ const Login: React.FC = () => {
         window.location.href = urlParams.get('redirect') || '/';
         return;
       }
-      console.log(msg);
       // 如果失败去设置用户错误信息
       setUserLoginState(msg);
     } catch (error) {
@@ -157,7 +157,8 @@ const Login: React.FC = () => {
       message.error(defaultLoginFailureMessage);
     }
   };
-  const { status, type: loginType } = userLoginState;
+  const { success, data } = userLoginState;
+  const { login_type, access_token } = data ?? {};
 
   return (
     <div className={styles.container}>
@@ -224,7 +225,7 @@ const Login: React.FC = () => {
             ]}
           />
 
-          {status === 'error' && loginType === 'account' && (
+          {!success && login_type === 'account' && (
             <LoginMessage
               content={intl.formatMessage({
                 id: 'pages.login.accountLogin.errorMessage',
@@ -281,7 +282,7 @@ const Login: React.FC = () => {
             </>
           )}
 
-          {status === 'error' && loginType === 'mobile' && (
+          {!success && login_type === 'mobile' && (
             <LoginMessage content="验证码错误" />
           )}
           {type === 'mobile' && (
