@@ -45,9 +45,9 @@ export async function rule(
   params: {
     // query
     /** 当前的页码 */
-    skip?: number;
+    pageSize?: number;
     /** 页面的容量 */
-    limit?: number;
+    current?: number;
   },
   options?: { [key: string]: any },
 ) {

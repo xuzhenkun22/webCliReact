@@ -9,21 +9,18 @@ const genList = (current: number, pageSize: number) => {
   for (let i = 0; i < pageSize; i += 1) {
     const index = (current - 1) * 10 + i;
     tableListDataSource.push({
-      key: index,
-      disabled: i % 6 === 0,
-      href: 'https://ant.design',
+      id: index,
+      is_active: i % 6 === 0,
+      email: 'https://ant.design',
       avatar: [
         'https://gw.alipayobjects.com/zos/rmsportal/eeHMaZBwmTvLdIwMfBpg.png',
         'https://gw.alipayobjects.com/zos/rmsportal/udxAbMEhpwthVVcjLXik.png',
       ][i % 2],
-      name: `TradeCode ${index}`,
-      owner: '曲丽丽',
-      desc: '这是一段描述',
-      callNo: Math.floor(Math.random() * 1000),
-      status: Math.floor(Math.random() * 10) % 4,
-      updatedAt: dayjs().format('YYYY-MM-DD'),
-      createdAt: dayjs().format('YYYY-MM-DD'),
-      progress: Math.ceil(Math.random() * 100),
+      username: `TradeCode ${index}`,
+      phone: '曲丽丽',
+      role: '这是一段描述',
+      created_at: dayjs().format('YYYY-MM-DD'),
+      updated_at: dayjs().format('YYYY-MM-DD'),
     });
   }
   tableListDataSource.reverse();
@@ -86,19 +83,16 @@ function getRule(req: Request, res: Response, u: string) {
             if (!filter[key]) {
               return true;
             }
-            if (filter[key].includes(`${item[key]}`)) {
-              return true;
-            }
-            return false;
+            return filter[key].includes(`${item[key]}`);
           },
         );
       });
     }
   }
 
-  if (params.name) {
+  if (params.username) {
     dataSource = dataSource.filter((data) =>
-      data?.name?.includes(params.name || ''),
+      data?.username?.includes(params.username || ''),
     );
   }
   const result = {
@@ -113,41 +107,30 @@ function getRule(req: Request, res: Response, u: string) {
 }
 
 function postRule(req: Request, res: Response, u: string, b: Request) {
-  let realUrl = u;
-  if (
-    !realUrl ||
-    Object.prototype.toString.call(realUrl) !== '[object String]'
-  ) {
-    realUrl = req.url;
-  }
-
   const body = b?.body || req.body;
   const { method, name, desc, key } = body;
 
   switch (method) {
     case 'delete':
       tableListDataSource = tableListDataSource.filter(
-        (item) => key.indexOf(item.key) === -1,
+        (item) => key.indexOf(item.id) === -1,
       );
       break;
     case 'post':
       (() => {
         const i = Math.ceil(Math.random() * 10000);
         const newRule: API.RuleListItem = {
-          key: tableListDataSource.length,
-          href: 'https://ant.design',
+          is_active: i % 6 === 0,
+          email: 'https://ant.design',
           avatar: [
             'https://gw.alipayobjects.com/zos/rmsportal/eeHMaZBwmTvLdIwMfBpg.png',
             'https://gw.alipayobjects.com/zos/rmsportal/udxAbMEhpwthVVcjLXik.png',
           ][i % 2],
-          name,
-          owner: '曲丽丽',
-          desc,
-          callNo: Math.floor(Math.random() * 1000),
-          status: Math.floor(Math.random() * 10) % 2,
-          updatedAt: dayjs().format('YYYY-MM-DD'),
-          createdAt: dayjs().format('YYYY-MM-DD'),
-          progress: Math.ceil(Math.random() * 100),
+          username: `TradeCode`,
+          phone: '曲丽丽',
+          role: '这是一段描述',
+          created_at: dayjs().format('YYYY-MM-DD'),
+          updated_at: dayjs().format('YYYY-MM-DD'),
         };
         tableListDataSource.unshift(newRule);
         return res.json(newRule);
@@ -158,7 +141,7 @@ function postRule(req: Request, res: Response, u: string, b: Request) {
       (() => {
         let newRule = {};
         tableListDataSource = tableListDataSource.map((item) => {
-          if (item.key === key) {
+          if (item.id === key) {
             newRule = { ...item, desc, name };
             return { ...item, desc, name };
           }

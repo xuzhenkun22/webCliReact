@@ -40,6 +40,22 @@ declare namespace API {
     pageSize?: number;
   };
 
+  type DayListItem = {
+    id?: number;
+    month?: string;
+    full_attendance_day?: number;
+    real_day?: number;
+    add_day?: number;
+    annual_leave_day?: number;
+  };
+
+  type DayList = {
+    data?: DayListItem[];
+    /** 列表的内容总数 */
+    total?: number;
+    success?: boolean;
+  };
+
   type RuleListItem = {
     id?: number;
     is_active?: boolean;
